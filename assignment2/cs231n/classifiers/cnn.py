@@ -140,6 +140,9 @@ class ThreeLayerConvNet(object):
         dx3, grads['W3'], grads['b3'] = affine_backward(d_softmax, cache3)
         dx2, grads['W2'], grads['b2'] = affine_relu_backward(dx3, cache2)
         dx1, grads['W1'], grads['b1'] = conv_relu_pool_backward(dx2, cache1)
+        grads['W3'] += self.reg * W3
+        grads['W2'] += self.reg * W2
+        grads['W1'] += self.reg * W1
 
         # pass
 

@@ -12,3 +12,5 @@ assignment3/cs231n/datasets/coco_captioning/val2014_vgg16_fc7_pca.h5
 assignment3/cs231n/datasets/squeezenet.ckpt.data-00000-of-00001
 assignment3/cs231n/datasets/imagenet_val_25.npz
 assignment3/cs231n/datasets/squeezenet.ckpt.index
+assignment3/cs231n/datasets/.DS_Store
+assignment1/cs231n/.DS_Store
