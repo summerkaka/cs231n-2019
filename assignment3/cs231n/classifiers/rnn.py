@@ -141,8 +141,26 @@ class CaptioningRNN(object):
         # in your implementation, if needed.                                       #
         ############################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
+        # step (1): image feature to hidden layer
+        h0, cache_1 = affine_forward(features, W_proj, b_proj)
+        # step (2): word one_hot code to high level 'content' vector (my understanding)
+        word_content, cache_2 = word_embedding_forward(captions_in, W_embed)
+        # step (3): RNN network taking hidden state and word_embed as input
+        rnn_out, cache_3 = rnn_forward(word_content, h0, Wx, Wh, b)
+        # step (4): convert hidden state to word in vocab as output
+        scores, cache_4 = temporal_affine_forward(rnn_out, W_vocab, b_vocab)
+        # step (5): comput softmax_loss of the output
+        loss, dx = temporal_softmax_loss(scores, captions_out, mask)
+        # backprop step 4.
+        drnn_out, grads['W_vocab'], grads['b_vocab'] = temporal_affine_backward(dx, cache_4)
+        # backprop step 3.
+        dword_content, dh0, grads['Wx'], grads['Wh'], grads['b']= rnn_backward(drnn_out, cache_3)
+        # backprop step 2.
+        grads['W_embed'] = word_embedding_backward(dword_content, cache_2)
+        # backprop step 1.
+        dfeatures, grads['W_proj'], grads['b_proj'] = affine_backward(dh0, cache_1)
 
-        pass
+        # pass
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ############################################################################
@@ -210,8 +228,16 @@ class CaptioningRNN(object):
         # you are using an LSTM, initialize the first cell state to zeros.        #
         ###########################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-
-        pass
+        h = features.dot(W_proj) + b_proj
+        x = self._start * np.ones(N,)
+        x, _ = word_embedding_forward(x.astype(np.int), W_embed)
+        for i in range(max_length):
+            h, _ = rnn_step_forward(x, h, Wx, Wh, b)
+            scores, _ = affine_forward(h, W_vocab, b_vocab)
+            captions[:,i] = scores.argmax(axis=1)
+            x, _ = word_embedding_forward(captions[:,i], W_embed)
+        
+        # pass
 
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         ############################################################################
