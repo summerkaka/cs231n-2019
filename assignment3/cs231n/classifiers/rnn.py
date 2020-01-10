@@ -146,7 +146,10 @@ class CaptioningRNN(object):
         # step (2): word one_hot code to high level 'content' vector (my understanding)
         word_content, cache_2 = word_embedding_forward(captions_in, W_embed)
         # step (3): RNN network taking hidden state and word_embed as input
-        rnn_out, cache_3 = rnn_forward(word_content, h0, Wx, Wh, b)
+        if self.cell_type == 'rnn':
+            rnn_out, cache_3 = rnn_forward(word_content, h0, Wx, Wh, b)
+        elif self.cell_type == 'lstm':
+            rnn_out, cache_3 = lstm_forward(word_content, h0, Wx, Wh, b)
         # step (4): convert hidden state to word in vocab as output
         scores, cache_4 = temporal_affine_forward(rnn_out, W_vocab, b_vocab)
         # step (5): comput softmax_loss of the output
@@ -154,7 +157,10 @@ class CaptioningRNN(object):
         # backprop step 4.
         drnn_out, grads['W_vocab'], grads['b_vocab'] = temporal_affine_backward(dx, cache_4)
         # backprop step 3.
-        dword_content, dh0, grads['Wx'], grads['Wh'], grads['b']= rnn_backward(drnn_out, cache_3)
+        if self.cell_type == 'rnn':
+            dword_content, dh0, grads['Wx'], grads['Wh'], grads['b']= rnn_backward(drnn_out, cache_3)
+        elif self.cell_type == 'lstm':
+            dword_content, dh0, grads['Wx'], grads['Wh'], grads['b']= lstm_backward(drnn_out, cache_3)
         # backprop step 2.
         grads['W_embed'] = word_embedding_backward(dword_content, cache_2)
         # backprop step 1.
@@ -232,7 +238,10 @@ class CaptioningRNN(object):
         x = self._start * np.ones(N,)
         x, _ = word_embedding_forward(x.astype(np.int), W_embed)
         for i in range(max_length):
-            h, _ = rnn_step_forward(x, h, Wx, Wh, b)
+            if (self.cell_type == 'rnn'):
+                h, _ = rnn_step_forward(x, h, Wx, Wh, b)
+            elif (self.cell_type == 'lstm'):
+                h, _, _ = lstm_step_forward(x, h, 0, Wx, Wh, b)
             scores, _ = affine_forward(h, W_vocab, b_vocab)
             captions[:,i] = scores.argmax(axis=1)
             x, _ = word_embedding_forward(captions[:,i], W_embed)
