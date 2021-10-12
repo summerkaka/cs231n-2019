@@ -29,7 +29,7 @@ mccabe==0.6.1
 mock==3.0.5
 more-itertools==7.2.0
 open3d-python==0.7.0.0
-opencv-python==4.1.2.30
+opencv-python==4.2.0.32
 openpyxl==3.0.2
 opt-einsum==3.1.0
 pandas==0.25.3
