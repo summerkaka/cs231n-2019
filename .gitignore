@@ -23,3 +23,9 @@ assignment1/cs231n/.DS_Store
 assignment2/.DS_Store
 assignment3/.vscode/settings.json
 assignment2/.DS_Store
+2017/assignment2/cs231n/datasets/cifar-10-python.tar.gz.1
+2017/assignment3/cs231n/datasets/coco_captioning/coco2014_captions.h5
+2017/assignment3/cs231n/datasets/coco_captioning/train2014_vgg16_fc7.h5
+2017/assignment3/cs231n/datasets/coco_captioning/train2014_vgg16_fc7_pca.h5
+2017/assignment3/cs231n/datasets/coco_captioning/val2014_vgg16_fc7_pca.h5
+2017/assignment3/cs231n/datasets/coco_captioning/val2014_vgg16_fc7.h5
