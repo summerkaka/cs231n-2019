@@ -29,3 +29,4 @@ assignment2/.DS_Store
 2017/assignment3/cs231n/datasets/coco_captioning/train2014_vgg16_fc7_pca.h5
 2017/assignment3/cs231n/datasets/coco_captioning/val2014_vgg16_fc7_pca.h5
 2017/assignment3/cs231n/datasets/coco_captioning/val2014_vgg16_fc7.h5
+assignment2/cs231n/datasets/cifar-10-python.tar.gz
